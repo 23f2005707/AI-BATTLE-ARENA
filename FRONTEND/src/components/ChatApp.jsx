@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import MessageItem from './MessageItem';
 import ChatInput from './ChatInput';
 import { initialMessages } from '../data/mockMessages';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function ChatApp() {
   const [messages, setMessages] = useState(initialMessages);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // Check initial user preference 
@@ -25,6 +27,12 @@ export default function ChatApp() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode]);
+
+  const handleLogout = () => {
+    if (confirm('Are you sure you want to logout?')) {
+      logout();
+    }
+  };
 
   const handleSendMessage = (problem, data) => {
     console.log("FINAL DATA:", data);
@@ -61,16 +69,28 @@ export default function ChatApp() {
               AI Battle Arena
             </h1>
             <p className="text-sm font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-1">
-              Editorial Intelligence Mode
+              {user && `Welcome, ${user.username}!`}
             </p>
           </div>
-          <button 
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="p-2 rounded-full bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 transition-colors"
+                aria-label="Logout"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
