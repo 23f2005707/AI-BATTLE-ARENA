@@ -24,7 +24,7 @@ export default function ChatInput({ onSendMessage }) {
     setIsLoading(true);
     // call the backend API
     try {
-      const response = await axios.post("http://localhost:3000/invoke", {
+      const response = await axios.post("hhttps://ai-battle-arena-6.onrender.com/invoke", {
         input: value
       }, {
         headers: {
