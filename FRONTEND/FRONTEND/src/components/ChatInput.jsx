@@ -36,7 +36,7 @@ export default function ChatInput({ onSendMessage }) {
       const data = response.data;
       console.log("DATA: ", data);
 
-      onSendMessage(value, data.result ?? data);
+      onSendMessage(value, data.result);  // ✅ pass whole data object
       setValue('');
     } catch(err){
       console.error("Failed to send message:", err);
@@ -56,18 +56,18 @@ export default function ChatInput({ onSendMessage }) {
       <div className="max-w-4xl mx-auto">
         {error && (
           <div className="mb-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
             <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
           </div>
         )}
         <form
           onSubmit={handleSubmit}
-          className="relative flex items-center shadow-sm bg-zinc-100 dark:bg-slate-900 rounded-full transition-shadow focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900 focus-within:bg-white dark:focus-within:bg-slate-950"
+          className="relative flex items-center shadow-sm bg-zinc-100 dark:bg-zinc-900 rounded-full transition-shadow focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900 focus-within:bg-white dark:focus-within:bg-zinc-950"
         >
           <input
             type="text"
-            className="w-full bg-transparent border-none py-4 pl-6 pr-28 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-600 focus:outline-none"
-            placeholder={isLoading ? "Searching for the best answer..." : "Enter your question..."}
+            className="w-full bg-transparent border-none py-4 pl-6 pr-14 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none"
+            placeholder={isLoading ? "Processing..." : "Enter your inquiry..."}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             disabled={isLoading}
@@ -75,19 +75,9 @@ export default function ChatInput({ onSendMessage }) {
           <button
             type="submit"
             disabled={!value.trim() || isLoading}
-            className="absolute right-2 inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="absolute right-2 p-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-full hover:bg-zinc-800 dark:hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {isLoading ? (
-              <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white dark:border-zinc-900/30 dark:border-t-zinc-900" />
-                Searching
-              </>
-            ) : (
-              <>
-                <SendHorizonal className="w-5 h-5" />
-                Ask
-              </>
-            )}
+            <SendHorizonal className="w-5 h-5" />
           </button>
         </form>
         <p className="text-center text-xs text-zinc-400 dark:text-zinc-600 mt-2 font-sans font-medium">

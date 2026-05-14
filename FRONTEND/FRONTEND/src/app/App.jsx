@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ChatApp from '../components/ChatApp';
 import Login from '../components/Login';
 import Register from '../components/Register';
@@ -8,21 +8,10 @@ import './App.css';
 function App() {
   const { isAuthenticated, isLoading } = useAuth();
   const [showRegister, setShowRegister] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('theme') === 'dark';
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode(prev => !prev);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-zinc-900 via-zinc-800 to-black flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-white">Loading...</p>
@@ -39,7 +28,7 @@ function App() {
     );
   }
 
-  return <ChatApp isDark={isDarkMode} toggleTheme={toggleTheme} />;
+  return <ChatApp />;
 }
 
 export default App;

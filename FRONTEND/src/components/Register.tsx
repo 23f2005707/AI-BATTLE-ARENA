@@ -58,117 +58,146 @@ export default function Register({ onSwitchToLogin }: RegisterProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-black flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-zinc-800/50 backdrop-blur-xl border border-zinc-700/50 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">AI Battle Arena</h1>
-            <p className="text-zinc-400 text-sm">Create your account</p>
-          </div>
-
-          {(error || localError) && (
-            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <p className="text-red-300 text-sm">{error || localError}</p>
+    <div className="min-h-screen relative overflow-hidden bg-slate-950 text-white">
+      <div className="absolute inset-0 auth-background-radial-register" />
+      <div className="absolute right-0 top-10 auth-glow-small" />
+      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl items-center px-4 py-10">
+        <div className="grid w-full gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <section className="space-y-8 rounded-4xl border border-white/10 bg-white/5 p-8 shadow-[0_40px_120px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl ring-1 ring-white/10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-200/80 shadow-sm shadow-blue-500/10">
+              Premium AI judging
             </div>
-          )}
+            <div className="space-y-4">
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+                Welcome to AI Battle Arena
+              </h1>
+              <p className="max-w-xl text-lg leading-8 text-slate-300">
+                Join the premium arena where AI compares solutions, labels winners, and explains the best path.
+              </p>
+            </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-zinc-200 mb-2">
-                Username
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 w-5 h-5 text-zinc-500" />
-                <input
-                  id="username"
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="w-full bg-zinc-700/50 border border-zinc-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                  placeholder="johndoe"
-                  disabled={isLoading}
-                />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-cyan-300/90">Fast evaluation</p>
+                <p className="mt-3 text-sm text-slate-200">Get crisp feedback from dual AI perspectives instantly.</p>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-fuchsia-300/90">Elegant workflow</p>
+                <p className="mt-3 text-sm text-slate-200">A refined interface that feels polished and intuitive.</p>
               </div>
             </div>
+          </section>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-zinc-200 mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 w-5 h-5 text-zinc-500" />
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-zinc-700/50 border border-zinc-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                  placeholder="you@example.com"
-                  disabled={isLoading}
-                />
-              </div>
+          <div className="relative rounded-4xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/60 backdrop-blur-xl">
+            <div className="absolute -right-10 top-10 h-24 w-24 rounded-full bg-violet-500/10 blur-3xl" />
+            <div className="absolute -left-8 bottom-10 h-28 w-28 rounded-full bg-cyan-500/10 blur-3xl" />
+            <div className="mb-8 space-y-3">
+              <h2 className="text-3xl font-semibold text-white">Create your account</h2>
+              <p className="text-sm text-slate-400">Sign up and start comparing premium AI solutions today.</p>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-200 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-5 h-5 text-zinc-500" />
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full bg-zinc-700/50 border border-zinc-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                  placeholder="••••••••"
-                  disabled={isLoading}
-                />
+            {(error || localError) && (
+              <div className="mb-4 flex items-start gap-3 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-red-200">
+                <AlertCircle className="mt-0.5 h-5 w-5 text-red-400" />
+                <p className="text-sm">{error || localError}</p>
               </div>
-            </div>
+            )}
 
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-200 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-5 h-5 text-zinc-500" />
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full bg-zinc-700/50 border border-zinc-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                  placeholder="••••••••"
-                  disabled={isLoading}
-                />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label htmlFor="username" className="block text-sm font-medium text-slate-300 mb-2">
+                  Username
+                </label>
+                <div className="relative">
+                  <User className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-500" />
+                  <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 py-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/20"
+                    placeholder="johndoe"
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-medium py-2 rounded-lg transition duration-200 mt-6"
-            >
-              {isLoading ? 'Creating Account...' : 'Sign Up'}
-            </button>
-          </form>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-500" />
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 py-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/20"
+                    placeholder="you@example.com"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-zinc-400 text-sm">
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-500" />
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 py-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/20"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-300 mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Lock className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-500" />
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border border-white/10 bg-slate-950/80 py-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500/20"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full rounded-2xl px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-fuchsia-500/20 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60 gradient-button-secondary"
+              >
+                {isLoading ? 'Creating Account...' : 'Sign Up'}
+              </button>
+            </form>
+
+            <div className="mt-6 border-t border-white/10 pt-6 text-center text-sm text-slate-400">
               Already have an account?{' '}
               <button
                 onClick={onSwitchToLogin}
-                className="text-blue-400 hover:text-blue-300 font-medium transition"
+                className="font-semibold text-white hover:text-cyan-300 transition"
               >
                 Sign in
               </button>
-            </p>
+            </div>
           </div>
         </div>
       </div>

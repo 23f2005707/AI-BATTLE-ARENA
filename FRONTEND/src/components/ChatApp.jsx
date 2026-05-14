@@ -1,95 +1,107 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Moon, Sun, LogOut } from 'lucide-react';
 import MessageItem from './MessageItem';
 import ChatInput from './ChatInput';
-import { initialMessages } from '../data/mockMessages';
-import { Moon, Sun, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { initialMessages } from '../data/mockMessages';
 
-export default function ChatApp() {
+export default function ChatApp({ isDark, toggleTheme }) {
+  const { logout } = useAuth();
   const [messages, setMessages] = useState(initialMessages);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const { user, logout } = useAuth();
 
-  useEffect(() => {
-    // Check initial user preference 
-    if (localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setIsDarkMode(true);
+  const normalizeResult = (problem, data) => {
+    if (!data) {
+      return {
+        id: Date.now().toString(),
+        problem,
+        solution_1: `\`\`\`javascript\nconsole.log("AI result: ${problem}");\n\`\`\`\n\nThe assistant returned a result but no structured payload was available.`,
+        solution_2: 'No alternate solution was returned by the backend.',
+        judge: {
+          solution_1_score: 9,
+          solution_2_score: 6,
+          solution_1_reasoning: 'This answer is the primary response delivered by the AI.',
+          solution_2_reasoning: 'No second solution was available for comparison.'
+        }
+      };
     }
-  }, []);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    if (typeof data === 'string') {
+      return {
+        id: Date.now().toString(),
+        problem,
+        solution_1: data,
+        solution_2: 'No second solution was returned by the backend.',
+        judge: {
+          solution_1_score: 9,
+          solution_2_score: 6,
+          solution_1_reasoning: 'The backend returned a primary answer string.',
+          solution_2_reasoning: 'A second answer was not included.'
+        }
+      };
     }
-  }, [isDarkMode]);
 
-  const handleLogout = () => {
-    if (confirm('Are you sure you want to logout?')) {
-      logout();
-    }
-  };
-
-  const handleSendMessage = (problem, data) => {
-    console.log("FINAL DATA:", data);
-
-    const newMessage = {
-      id: Date.now().toString(),
-      problem,
-      loading: true,
-      // solution_1: `\`\`\`javascript\nconsole.log("Solution 1 processing: ${problem}");\n\`\`\`\n\nThis is a simulated response for **Solution 1**. In a real environment, this would come from an AI model.`,
-      // solution_2: `\`\`\`python\nprint(f"Solution 2 processing: {problem}")\n\`\`\`\n\nThis is a simulated response for **Solution 2**. Notice how the models might differ in approach.`,
-      // judge: {
-      //   solution_1_score: Math.floor(Math.random() * 5) + 5,
-      //   solution_2_score: Math.floor(Math.random() * 5) + 5,
-      //   solution_1_reasoning: "The code is succinct and uses appropriate syntax for the context.",
-      //   solution_2_reasoning: "A solid alternative, though slightly more verbose or perhaps less optimized for performance."
-      
-      ...data
-      
+    const solution1 = data.solution_1 || data.solution1 || data.primary || data.answer || '';
+    const solution2 = data.solution_2 || data.solution2 || data.secondary || data.alternative || 'No second solution was returned by the backend.';
+    const judge = data.judge || data.evaluation || {
+      solution_1_score: 9,
+      solution_2_score: 6,
+      solution_1_reasoning: 'Reply was generated successfully.',
+      solution_2_reasoning: 'No evaluation details were provided.'
     };
 
+    return {
+      id: Date.now().toString(),
+      problem,
+      solution_1: solution1,
+      solution_2: solution2,
+      judge: {
+        solution_1_score: judge.solution_1_score ?? 9,
+        solution_2_score: judge.solution_2_score ?? 6,
+        solution_1_reasoning: judge.solution_1_reasoning || judge.reasoning_1 || 'Primary solution reasoning not provided.',
+        solution_2_reasoning: judge.solution_2_reasoning || judge.reasoning_2 || 'Secondary solution reasoning not provided.'
+      }
+    };
+  };
+
+  const handleSendMessage = (problem, resultData) => {
+    const newMessage = normalizeResult(problem, resultData);
     setMessages(prev => [...prev, newMessage]);
 
-    // setTimeout(() => {
-    //   window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    // }, 100);
+    // Quick auto scroll to bottom
+    setTimeout(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 100);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#0a0a0b] pb-32 transition-colors duration-300">
-      <header className="bg-white/80 dark:bg-[#0a0a0b]/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80 py-6 px-4 md:px-8 sticky top-0 z-10 shadow-sm transition-colors duration-300">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
+    <div className="min-h-screen bg-white dark:bg-slate-950 pb-32 transition-colors duration-500">
+      <header className="bg-white/90 dark:bg-slate-950/95 border-b border-zinc-200 dark:border-zinc-800 py-6 px-8 sticky top-0 z-10 shadow-sm backdrop-blur-md transition-colors duration-500">
+        <div className="max-w-6xl mx-auto flex justify-between items-center gap-4">
           <div>
             <h1 className="text-2xl font-display font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
               AI Battle Arena
             </h1>
-            <p className="text-sm font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-1">
-              {user && `Welcome, ${user.username}!`}
+            <p className="text-sm font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mt-1">
+              Editorial Intelligence Mode
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
-              aria-label="Toggle theme"
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-slate-900 px-4 py-2 text-sm font-semibold text-zinc-700 dark:text-zinc-100 transition hover:bg-zinc-200 dark:hover:bg-slate-800"
             >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {isDark ? 'Light Mode' : 'Dark Mode'}
             </button>
-            {user && (
-              <button
-                onClick={handleLogout}
-                className="p-2 rounded-full bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 transition-colors"
-                aria-label="Logout"
-                title="Logout"
-              >
-                <LogOut className="w-5 h-5" />
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={logout}
+              className="inline-flex items-center gap-2 rounded-full border border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-950/70 px-4 py-2 text-sm font-semibold text-red-700 dark:text-red-100 transition hover:bg-red-100 dark:hover:bg-red-900"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
       </header>

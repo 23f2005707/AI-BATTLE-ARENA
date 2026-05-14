@@ -1,4 +1,3 @@
-// import app from "./src/app.ts";
 import app from "./src/app.js";
 
 app.listen(3000, () => {
