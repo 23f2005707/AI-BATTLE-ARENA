@@ -1,9 +1,7 @@
 import { StateGraph, StateSchema, START, END, type GraphNode, type CompiledStateGraph } from "@langchain/langgraph";
 
 import { z } from "zod";
-import { geminiModel, groqModel, mistralAIModel } from "./model.ai.js";
-
-import { HumanMessage } from "@langchain/core/messages"
+import { groqModel, mistralAIModel } from "./model.ai.js";
 
 
 // Create the State Schema
@@ -42,7 +40,7 @@ const judgeNode: GraphNode<typeof state> = async (state) => {
 
     const { problem, solution_1, solution_2 } = state;
 
-    // using gemini model as the judge to evaluate data format.
+    // using the Groq model as the judge to evaluate the solutions.
     const schema = z.object({
         solution_1_score: z.number().min(0).max(10),
         solution_2_score: z.number().min(0).max(10),
@@ -51,7 +49,7 @@ const judgeNode: GraphNode<typeof state> = async (state) => {
     });
 
     // wrap module with structured output 
-    const judge = geminiModel.withStructuredOutput(schema);
+    const judge = groqModel.withStructuredOutput(schema);
 
     const result = await judge.invoke(`
             You are a judge tasked with evaluating two solutions.
