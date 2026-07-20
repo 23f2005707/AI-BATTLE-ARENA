@@ -4,6 +4,8 @@ import { SendHorizonal, AlertCircle } from 'lucide-react';
 import axios from "axios"
 import { useAuth } from '../context/AuthContext';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export default function ChatInput({ onSendMessage }) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +26,7 @@ export default function ChatInput({ onSendMessage }) {
     setIsLoading(true);
     // call the backend API
     try {
-      const response = await axios.post("hhttps://ai-battle-arena-6.onrender.com/invoke", {
+      const response = await axios.post(`${API_BASE_URL}/invoke`, {
         input: value
       }, {
         headers: {

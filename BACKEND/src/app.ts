@@ -14,21 +14,39 @@ const app = express()
 app.use(express.json())  // middleware
 
 // cors middleware
+const allowedOrigins = [
+    'https://ai-battle-arena-zeta.vercel.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+];
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+        }
+
+        callback(new Error('Not allowed by CORS'));
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true 
 }))
 
 // Connect to MongoDB
-mongoose.connect(config.MONGODB_URI)
-    .then(() => {
+const connectToDatabase = async () => {
+    try {
+        await mongoose.connect(config.MONGODB_URI, {
+            serverSelectionTimeoutMS: 5000,
+        });
         console.log('✅ Connected to MongoDB');
-    })
-    .catch((err) => {
-        console.error('❌ MongoDB connection error:', err.message);
+    } catch (error: any) {
+        console.error('❌ MongoDB connection error:', error.message);
         console.log('⚠️ Running without database. Auth will not work.');
-    })
+    }
+};
+
+connectToDatabase();
 
 
 app.get('/', async (req, res) => {

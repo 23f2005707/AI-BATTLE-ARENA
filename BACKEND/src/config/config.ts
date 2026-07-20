@@ -7,7 +7,7 @@ const config = {
     MISTRALAI_API_KEY: process.env.MISTRALAI_API_KEY || '',
     GROQ_API_KEY: process.env.GROQ_API_KEY || '',
     JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret_key_here_change_in_production',
-    MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/ai-battle-arena',
+    MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/ai-battle-arena',
     JWT_EXPIRE: process.env.JWT_EXPIRE || '7d',
 }
 
