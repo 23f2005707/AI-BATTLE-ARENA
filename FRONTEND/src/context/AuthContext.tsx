@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const API_BASE_URL = "https://ai-battle-arena-5.onrender.com";
+const API_BASE_URL = '';
 
 interface User {
   id: string;

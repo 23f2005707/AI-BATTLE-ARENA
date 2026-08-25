@@ -17,8 +17,8 @@ export default function ChatApp({ isDark, toggleTheme }) {
         solution_1: `\`\`\`javascript\nconsole.log("AI result: ${problem}");\n\`\`\`\n\nThe assistant returned a result but no structured payload was available.`,
         solution_2: 'No alternate solution was returned by the backend.',
         judge: {
-          solution_1_score: 9,
-          solution_2_score: 6,
+          solution_1_score: 0,
+          solution_2_score: 0,
           solution_1_reasoning: 'This answer is the primary response delivered by the AI.',
           solution_2_reasoning: 'No second solution was available for comparison.'
         }
@@ -32,8 +32,8 @@ export default function ChatApp({ isDark, toggleTheme }) {
         solution_1: data,
         solution_2: 'No second solution was returned by the backend.',
         judge: {
-          solution_1_score: 9,
-          solution_2_score: 6,
+          solution_1_score: 0,
+          solution_2_score: 0,
           solution_1_reasoning: 'The backend returned a primary answer string.',
           solution_2_reasoning: 'A second answer was not included.'
         }
@@ -43,9 +43,9 @@ export default function ChatApp({ isDark, toggleTheme }) {
     const solution1 = data.solution_1 || data.solution1 || data.primary || data.answer || '';
     const solution2 = data.solution_2 || data.solution2 || data.secondary || data.alternative || 'No second solution was returned by the backend.';
     const judge = data.judge || data.evaluation || {
-      solution_1_score: 9,
-      solution_2_score: 6,
-      solution_1_reasoning: 'Reply was generated successfully.',
+      solution_1_score: 0,
+      solution_2_score: 0,
+      solution_1_reasoning: 'No evaluation details were provided.',
       solution_2_reasoning: 'No evaluation details were provided.'
     };
 
@@ -55,8 +55,8 @@ export default function ChatApp({ isDark, toggleTheme }) {
       solution_1: solution1,
       solution_2: solution2,
       judge: {
-        solution_1_score: judge.solution_1_score ?? 9,
-        solution_2_score: judge.solution_2_score ?? 6,
+        solution_1_score: judge.solution_1_score ?? 0,
+        solution_2_score: judge.solution_2_score ?? 0,
         solution_1_reasoning: judge.solution_1_reasoning || judge.reasoning_1 || 'Primary solution reasoning not provided.',
         solution_2_reasoning: judge.solution_2_reasoning || judge.reasoning_2 || 'Secondary solution reasoning not provided.'
       }

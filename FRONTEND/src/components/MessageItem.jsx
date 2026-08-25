@@ -28,12 +28,12 @@ export default function MessageItem({ message }) {
         <SolutionCard 
           title="Solution 1" 
           content={solution_1} 
-          isWinning={judge.solution_1_score > judge.solution_2_score} 
+          isWinning={judge?.solution_1_score > judge?.solution_2_score} 
         />
         <SolutionCard 
           title="Solution 2" 
           content={solution_2} 
-          isWinning={judge.solution_2_score > judge.solution_1_score} 
+          isWinning={judge?.solution_2_score > judge?.solution_1_score} 
         />
       </div>
 

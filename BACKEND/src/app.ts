@@ -15,7 +15,7 @@ app.use(express.json())  // middleware
 
 // cors middleware
 const allowedOrigins = [
-    'https://ai-battle-arena-zeta.vercel.app',
+    // 'https://ai-battle-arena-zeta.vercel.app',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
 ];
@@ -81,6 +81,15 @@ app.post("/invoke", authMiddleware, async (req, res) => {
         })
     } catch (error: any) {
         console.error('Error executing graph:', error);
+
+        if (error?.status === 429 || error?.code === 'rate_limit_exceeded') {
+            const retryAfter = error?.headers?.get?.('retry-after') || error?.headers?.['retry-after'];
+            return res.status(429).json({
+                success: false,
+                message: `AI rate limit reached. Please retry in ${retryAfter || 'a few'} seconds.`,
+            });
+        }
+
         res.status(500).json({
             success: false,
             message: error.message || 'Error executing graph'
