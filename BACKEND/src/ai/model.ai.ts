@@ -19,7 +19,7 @@ export const mistralAIModel = new ChatMistralAI({
 });
 
 export const groqModel = new ChatGroq({
-    model: "openai/gpt-oss-120b",
+    model: config.GROQ_MODEL,
     apiKey: config.GROQ_API_KEY,
     temperature: 0.3, 
     maxTokens: 300   // reduce output size
