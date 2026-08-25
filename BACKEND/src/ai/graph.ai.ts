@@ -1,7 +1,7 @@
 import { StateGraph, StateSchema, START, END, type GraphNode, type CompiledStateGraph } from "@langchain/langgraph";
 
 import { z } from "zod";
-import { cohereModel, groqJudgeModel, groqModel, mistralAIModel } from "./model.ai.js";
+import { cohereModel, groqModel, mistralAIModel } from "./model.ai.js";
 
 const getTextContent = (content: unknown): string => {
     if (typeof content === "string") {
@@ -85,7 +85,7 @@ const judgeNode: GraphNode<typeof state> = async (state) => {
 
     const evaluateSolution = async (solution: string, solutionNumber: number) => {
         try {
-            const response = await groqJudgeModel.invoke(`
+            const response = await cohereModel.invoke(`
                 Evaluate solution ${solutionNumber} for the problem below.
                 Score correctness, clarity, and efficiency from 0 to 10.
                 Return valid JSON only with exactly these fields: score and reasoning.

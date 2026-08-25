@@ -5,10 +5,9 @@ import { ChatGroq } from "@langchain/groq";
 import config from "../config/config.js"
 
 export const cohereModel = new ChatCohere({
-    model: "command-r-plus",
+    model: "command-a-03-2025",
     apiKey: config.COHERE_API_KEY,
-    temperature: 0.3,
-    maxTokens: 400
+    temperature: 0.3
 });
 
 export const mistralAIModel = new ChatMistralAI({
@@ -25,9 +24,3 @@ export const groqModel = new ChatGroq({
     maxTokens: 400
 });
 
-export const groqJudgeModel = new ChatGroq({
-    model: config.GROQ_MODEL,
-    apiKey: config.GROQ_API_KEY,
-    temperature: 0,
-    maxTokens: 500
-});
