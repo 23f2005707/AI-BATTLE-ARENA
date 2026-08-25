@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
+import AnalysisChart from './AnalysisChart';
 
 export default function JudgeRecommendation({ judge }) {
   if (!judge) return null;
@@ -41,6 +42,8 @@ export default function JudgeRecommendation({ judge }) {
           </p>
         </div>
       </div>
+
+      <AnalysisChart judge={judge} />
     </div>
   );
 }
