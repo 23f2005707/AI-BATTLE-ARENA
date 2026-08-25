@@ -19,7 +19,7 @@ export const mistralAIModel = new ChatMistralAI({
 });
 
 export const groqModel = new ChatGroq({
-    model: "llama-3.3-70b-versatile",
+    model: "llama-3.1-8b-instant",
     apiKey: config.GROQ_API_KEY,
     temperature: 0.3, 
     maxTokens: 300   // reduce output size
