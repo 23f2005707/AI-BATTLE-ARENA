@@ -16,9 +16,7 @@ app.use(express.json())  // middleware
 // cors middleware
 const allowedOrigins = [
     // 'https://ai-battle-arena-zeta.vercel.app',
-    'https://ai-battle-arena-8-5xqs.onrender.com',
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
+    'https://arena-agents-f1ii.onrender.com'
 ];
 
 app.use(cors({
